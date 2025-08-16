@@ -9,7 +9,7 @@ public partial class Grapple : Node2D
     [Export] public float GRAPPLE_STRENGTH_OPPOSITE = 0.75f;
     [Export] public float GRAPPLE_DAMPEN = 0.95f;
     [Export] public float GRAPPLE_MAX_RANGE = 200f;
-    [Export] public float GRAPPLE_MAX_LENGTH = 300f;
+    [Export] public float GRAPPLE_MAX_LENGTH = 210f;
 
     private Vector2 grapple_velocity = new Vector2(0, 0);
     public Vector2 grapple_direction = new Vector2(0, 0);
@@ -82,6 +82,8 @@ public partial class Grapple : Node2D
 
     public void Release()
     {
+        grapple_tip_vector = this.GlobalPosition;
+        grapple_bullet.GlobalPosition = this.GlobalPosition;
         flying = false;
         hooked = false;
     }

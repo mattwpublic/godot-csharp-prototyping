@@ -10,7 +10,7 @@ public partial class Player : CharacterBody2D
 
     [Export] float GRAVITY = 2000.0f;
     [Export] float FALL_GRAVITY = 5000.0f;
-    [Export] float FAST_FALL_GRAVITY = 5000.0f;
+    [Export] float FAST_FALL_GRAVITY = 6000.0f;
     [Export] float WALL_GRAVITY = 25.0f;
 
     [Export] float JUMP_VELOCITY = -700.0f;
@@ -109,6 +109,7 @@ public partial class Player : CharacterBody2D
                 coyote_timer.Start();
             }
             PlusEqualsVelocityY(CalculateGravity(input_vector) * (float)delta);
+            
         }
 
         //jumping
@@ -166,7 +167,21 @@ public partial class Player : CharacterBody2D
         //Grapple
         if (grapple.hooked)
         {
+            //calculate initial grapple velocity based on vector magnitude
             grapple_velocity = (grapple.grapple_tip_vector - this.GlobalPosition).Normalized() * grapple.GRAPPLE_STRENGTH;
+
+            //if the player reaches the max length of the grapple rope, it should not let them go any further
+            if ((grapple.grapple_tip_vector - this.GlobalPosition).Length() >= grapple.GRAPPLE_MAX_LENGTH)
+            {
+                //set the players position to the furthest possible position such that the max length is correct
+                var new_player_position = ((this.GlobalPosition - grapple.grapple_tip_vector).Normalized() * grapple.GRAPPLE_MAX_LENGTH) + grapple.grapple_bullet.GlobalPosition;
+                this.GlobalPosition = new_player_position;
+                
+                //this.Velocity = new Vector2(0, 0);
+                EqualsVelocityY(0);
+            }
+
+            //try to add more power to grapple as it stretches to its maximum range
             if ((grapple.grapple_tip_vector - this.GlobalPosition).Length() >= grapple.GRAPPLE_MAX_RANGE)
             {
                 grapple_velocity *= 1.01f;
@@ -179,8 +194,10 @@ public partial class Player : CharacterBody2D
             }
             else
             {
-                //grapple_velocity.Y *= GRAPPLE_STRENGTH_UP;
+                grapple_velocity.Y *= grapple.GRAPPLE_STRENGTH_UP;
             }
+
+            //if the player is moving against the grapple's pull, it will weaken, otherwise it dampens everything
             if ((grapple_velocity.X < 0 && input_vector.X < 0) || (grapple_velocity.X > 0 && input_vector.X > 0))
             {
                 grapple_velocity.X *= grapple.GRAPPLE_DAMPEN;
@@ -188,21 +205,13 @@ public partial class Player : CharacterBody2D
             else
             {
                 grapple_velocity.X *= grapple.GRAPPLE_STRENGTH_OPPOSITE;
-            }
+            } 
         }
         else
         {
             grapple_velocity = new Vector2(0, 0);
         }
         this.Velocity += grapple_velocity;
-        if ((grapple.grapple_tip_vector - this.GlobalPosition).Length() >= grapple.GRAPPLE_MAX_LENGTH)
-        {
-                //Release();
-                //essentially clamp the player's position to be at the max length
-                var new_player_position = ((this.GlobalPosition - grapple.grapple_tip_vector).Normalized() * grapple.GRAPPLE_MAX_LENGTH) + grapple.grapple_bullet.GlobalPosition;
-                this.GlobalPosition = new_player_position;
-                //this.Velocity = new Vector2(0, 0);
-        }
 
         MoveAndSlide();
     }
@@ -227,7 +236,7 @@ public partial class Player : CharacterBody2D
         {
             return WALL_GRAVITY;
         }
-        if(Velocity.Y < 0)
+        if (Velocity.Y < 0 || grapple.hooked)
         {
             return GRAVITY;
         }

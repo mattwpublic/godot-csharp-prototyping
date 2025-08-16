@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://orb7qwg0gie4" path="res://assets/textures/8px-grid.png" id="2_74khn"]
 [ext_resource type="PackedScene" uid="uid://1n3r20q52sby" path="res://scenes/player.tscn" id="2_rq02l"]
 [ext_resource type="Script" uid="uid://c2y4db56weyds" path="res://scripts/Camera2d.cs" id="3_kgelg"]
-[ext_resource type="AudioStream" uid="uid://diby3mg0kne02" path="res://assets/sfx/Starship Groove (Animusic) - Remastered 4K 60FPS.mp3" id="5_tmmdy"]
+[ext_resource type="AudioStream" uid="uid://cbre5qnpqvq4d" path="res://assets/sfx/astral.mp3" id="5_tmmdy"]
 [ext_resource type="AudioStream" uid="uid://cn1beyngx6ha6" path="res://assets/sfx/camera_flip_woosh.wav" id="6_tmmdy"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_bp4fa"]
