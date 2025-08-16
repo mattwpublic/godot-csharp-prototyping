@@ -1,0 +1,136 @@
+[gd_scene load_steps=30 format=3 uid="uid://1n3r20q52sby"]
+
+[ext_resource type="Texture2D" uid="uid://c4kf3nregvecu" path="res://assets/textures/jellyguy.png" id="1_g2els"]
+[ext_resource type="Script" uid="uid://c5eyrjpv3fi1p" path="res://scripts/Player.cs" id="1_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://b4e72604587qu" path="res://assets/textures/littlegun2.png" id="3_dqkch"]
+[ext_resource type="Script" uid="uid://dhe284qhnahlq" path="res://scripts/Gun.cs" id="4_dqkch"]
+[ext_resource type="Script" uid="uid://dqpw5jrywy8nj" path="res://scripts/LaserContainer.cs" id="5_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://bp3f8a45wxsb8" path="res://scenes/bullet.tscn" id="5_smehm"]
+[ext_resource type="Texture2D" uid="uid://cosr4u7ju5h3r" path="res://assets/textures/laser_point.png" id="6_tuyoq"]
+[ext_resource type="Script" uid="uid://bwlypwobqws22" path="res://scripts/Grapple.cs" id="7_fjrip"]
+[ext_resource type="Script" uid="uid://ccx0xx4shrohj" path="res://scripts/Muzzle.cs" id="7_ur7pv"]
+[ext_resource type="AudioStream" uid="uid://ck1rxmgldurcb" path="res://assets/sfx/guns/pistol/pistol1.wav" id="10_3v2ag"]
+[ext_resource type="AudioStream" uid="uid://d1tu0vxrkuo68" path="res://assets/sfx/guns/pistol/pistol2.wav" id="11_jej6c"]
+[ext_resource type="AudioStream" uid="uid://brijffyrmuc70" path="res://assets/sfx/guns/pistol/pistol3.wav" id="12_f1ej7"]
+[ext_resource type="AudioStream" uid="uid://cvw1vuqalatj5" path="res://assets/sfx/grapple/grapple_shoot1.wav" id="13_4r5pv"]
+[ext_resource type="AudioStream" uid="uid://b3nnu7rhxmmue" path="res://assets/sfx/jump1.wav" id="13_oprun"]
+[ext_resource type="AudioStream" uid="uid://cy4r4ya082bt5" path="res://assets/sfx/grapple/grapple_shoot2.wav" id="14_60mlk"]
+[ext_resource type="AudioStream" uid="uid://c3q6dwiw8ta6w" path="res://assets/sfx/jump2.wav" id="14_a8ls1"]
+[ext_resource type="AudioStream" uid="uid://dddv3jtgnep1t" path="res://assets/sfx/grapple/grapple_shoot3.wav" id="15_i4ail"]
+[ext_resource type="AudioStream" uid="uid://ciaixgpq3aiss" path="res://assets/sfx/jump3.wav" id="15_qfm1y"]
+[ext_resource type="AudioStream" uid="uid://lkc0ysyqib5p" path="res://assets/sfx/air_jump.wav" id="16_a8ls1"]
+[ext_resource type="AudioStream" uid="uid://p3c4a1f6v6hs" path="res://assets/sfx/grapple/grapple_hit1.wav" id="16_a38lo"]
+[ext_resource type="AudioStream" uid="uid://buewtbr1fjkkb" path="res://assets/sfx/grapple/grapple_hit2.wav" id="17_4ni07"]
+[ext_resource type="AudioStream" uid="uid://b1vyai2pm2qit" path="res://assets/sfx/grapple/grapple_hit3.wav" id="18_l71n6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
+size = Vector2(8, 8)
+
+[sub_resource type="Gradient" id="Gradient_qlg0r"]
+offsets = PackedFloat32Array(0, 0.825806, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 0.645667, 1, 0, 0, 0)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_oprun"]
+streams_count = 3
+stream_0/stream = ExtResource("10_3v2ag")
+stream_1/stream = ExtResource("11_jej6c")
+stream_2/stream = ExtResource("12_f1ej7")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fulsm"]
+streams_count = 3
+stream_0/stream = ExtResource("13_oprun")
+stream_1/stream = ExtResource("14_a8ls1")
+stream_2/stream = ExtResource("15_qfm1y")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ur7pv"]
+radius = 1.0
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_a38lo"]
+streams_count = 3
+stream_0/stream = ExtResource("13_4r5pv")
+stream_1/stream = ExtResource("14_60mlk")
+stream_2/stream = ExtResource("15_i4ail")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ke2ow"]
+streams_count = 3
+stream_0/stream = ExtResource("16_a38lo")
+stream_1/stream = ExtResource("17_4ni07")
+stream_2/stream = ExtResource("18_l71n6")
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_qhqgy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_qhqgy")
+
+[node name="Body" type="Sprite2D" parent="."]
+texture = ExtResource("1_g2els")
+
+[node name="Gun" type="Sprite2D" parent="Body"]
+texture = ExtResource("3_dqkch")
+offset = Vector2(4, 1)
+script = ExtResource("4_dqkch")
+
+[node name="LaserContainer" type="Node2D" parent="Body/Gun"]
+show_behind_parent = true
+position = Vector2(4, 1)
+script = ExtResource("5_qlg0r")
+
+[node name="LaserLine2D" type="Line2D" parent="Body/Gun/LaserContainer"]
+show_behind_parent = true
+points = PackedVector2Array(0, 0, 100, 0)
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+gradient = SubResource("Gradient_qlg0r")
+joint_mode = 1
+end_cap_mode = 2
+
+[node name="LaserRayCast" type="RayCast2D" parent="Body/Gun/LaserContainer"]
+target_position = Vector2(100, 0)
+
+[node name="LaserPoint" type="Sprite2D" parent="Body/Gun/LaserContainer"]
+physics_interpolation_mode = 2
+texture = ExtResource("6_tuyoq")
+offset = Vector2(-4, -0.5)
+
+[node name="LaserPointRayCast" type="RayCast2D" parent="Body/Gun/LaserContainer"]
+target_position = Vector2(500, 0)
+
+[node name="Muzzle" type="Node2D" parent="Body/Gun"]
+position = Vector2(9, 1)
+script = ExtResource("7_ur7pv")
+bulletScene = ExtResource("5_smehm")
+
+[node name="PistolGunshotSFX" type="AudioStreamPlayer2D" parent="Body/Gun/Muzzle"]
+position = Vector2(-9, -1)
+stream = SubResource("AudioStreamRandomizer_oprun")
+
+[node name="JumpSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_fulsm")
+
+[node name="AirJumpSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_a8ls1")
+volume_db = 4.602
+
+[node name="Grapple" type="Node2D" parent="."]
+show_behind_parent = true
+script = ExtResource("7_fjrip")
+
+[node name="GrappleLine" type="Line2D" parent="Grapple"]
+points = PackedVector2Array(0, 0, 0, 0)
+width = 2.0
+default_color = Color(0.321569, 0.52549, 1, 0.870588)
+
+[node name="GrappleBullet" type="CharacterBody2D" parent="Grapple"]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grapple/GrappleBullet"]
+shape = SubResource("CircleShape2D_ur7pv")
+
+[node name="GrappleShootSFX" type="AudioStreamPlayer2D" parent="Grapple"]
+stream = SubResource("AudioStreamRandomizer_a38lo")
+
+[node name="GrappleHitSFX" type="AudioStreamPlayer2D" parent="Grapple"]
+stream = SubResource("AudioStreamRandomizer_ke2ow")

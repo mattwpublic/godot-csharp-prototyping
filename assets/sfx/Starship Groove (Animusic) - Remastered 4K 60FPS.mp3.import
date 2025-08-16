@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://diby3mg0kne02"
+path="res://.godot/imported/Starship Groove (Animusic) - Remastered 4K 60FPS.mp3-fc8c84129fa7dd1164a49a81b02fab82.mp3str"
+
+[deps]
+
+source_file="res://assets/sfx/Starship Groove (Animusic) - Remastered 4K 60FPS.mp3"
+dest_files=["res://.godot/imported/Starship Groove (Animusic) - Remastered 4K 60FPS.mp3-fc8c84129fa7dd1164a49a81b02fab82.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
