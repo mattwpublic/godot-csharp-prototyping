@@ -57,22 +57,6 @@ public partial class Player : CharacterBody2D
         air_jump_sfx = GetNode<AudioStreamPlayer2D>("AirJumpSFX");
     }
 
-    public override void _Input(InputEvent @event)
-    {
-        base._Input(@event);
-        if (@event is InputEventMouseButton)
-        {
-            if (@event.IsActionPressed("grapple"))
-            {
-                grapple.Shoot();
-            }
-            else
-            {
-                grapple.Release();
-            }
-        }
-    }
-
     public override void _Process(double delta)
     {
         base._Process(delta);
@@ -94,22 +78,32 @@ public partial class Player : CharacterBody2D
         //This doesn't do anything right now. When you implement sword slashes, this might be helpful though.
         float dash_multiplier = 1;
 
+        //input
         input_vector = GetInputVector();
+        if (Input.IsActionJustPressed("grapple"))
+        {
+            grapple.Shoot();
+        }
+        else if (!Input.IsActionPressed("grapple"))
+        {
+            grapple.Release();
+        }
 
         //Gravity
-        if(IsOnFloor())
+        if (IsOnFloor())
         {
             coyote_jump_available = true;
             air_jump_available = true;
             coyote_timer.Stop();
         }
-        else {
-            if(coyote_jump_available && coyote_timer.IsStopped())
+        else
+        {
+            if (coyote_jump_available && coyote_timer.IsStopped())
             {
                 coyote_timer.Start();
             }
             PlusEqualsVelocityY(CalculateGravity(input_vector) * (float)delta);
-            
+
         }
 
         //jumping
