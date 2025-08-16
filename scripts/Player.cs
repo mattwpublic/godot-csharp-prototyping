@@ -110,24 +110,15 @@ public partial class Player : CharacterBody2D
         jump_attempted = Input.IsActionJustPressed("jump");
         if(jump_attempted || input_buffer.TimeLeft > 0)
         {
-            if (jump_attempted)
-            {
-                GD.Print("jump attempted");
-            }
-            else if (input_buffer.TimeLeft > 0)
-            {
-                GD.Print("no jump attempted, but input buffer had time left.");
-            }
             if (coyote_jump_available)
             {
-                GD.Print("coyote jump was available");
                 EqualsVelocityY(JUMP_VELOCITY);
                 coyote_jump_available = false;
                 jump_sfx.Play();
+                input_buffer.Stop();
             }
             else if (air_jump_available && !IsOnWall())
             {
-                GD.Print("air jump was available");
                 EqualsVelocityY(JUMP_VELOCITY);
                 air_jump_available = false;
                 air_jump_sfx.Play();
@@ -141,7 +132,6 @@ public partial class Player : CharacterBody2D
             }
             else if (jump_attempted)
             {
-                GD.Print("Jump attempted, but no conditions were met so the buffer was started.");
                 input_buffer.Start();
             }
         }

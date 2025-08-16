@@ -7,8 +7,8 @@ public partial class Camera2d : Camera2D
     float MAX_FOV = 200f;
     float CLOSE_SMOOTHING = 32.0f;
     float FAR_SMOOTHING = 50.0f;
-    float ZOOM_AMOUNT = 1f;
-    float MAX_ZOOM_OUT = -200f;
+    float ZOOM_AMOUNT = 1.1f;
+    float MAX_ZOOM_OUT = -10f;
     float MAX_ZOOM_IN = 10f;
     
     Vector2 OFFSET = new Vector2(60.0f, 0.0f);
