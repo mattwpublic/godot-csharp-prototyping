@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://cbohvp3k37307"]
+[gd_scene load_steps=16 format=4 uid="uid://cbohvp3k37307"]
 
 [ext_resource type="Texture2D" uid="uid://bbv65qcil20ws" path="res://assets/textures/8px.png" id="1_ssdcn"]
 [ext_resource type="Texture2D" uid="uid://orb7qwg0gie4" path="res://assets/textures/8px-grid.png" id="2_74khn"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c2y4db56weyds" path="res://scripts/Camera2d.cs" id="3_kgelg"]
 [ext_resource type="AudioStream" uid="uid://cbre5qnpqvq4d" path="res://assets/sfx/astral.mp3" id="5_tmmdy"]
 [ext_resource type="AudioStream" uid="uid://cn1beyngx6ha6" path="res://assets/sfx/camera_flip_woosh.wav" id="6_tmmdy"]
+[ext_resource type="PackedScene" uid="uid://dw7pmsto1soog" path="res://scenes/enemy.tscn" id="7_vh4rc"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_bp4fa"]
 
@@ -115,3 +116,6 @@ parameters/looping = true
 
 [node name="CameraFlipSFX" type="AudioStreamPlayer2D" parent="Player/Camera2D"]
 stream = ExtResource("6_tmmdy")
+
+[node name="CharacterBody2D" parent="." instance=ExtResource("7_vh4rc")]
+position = Vector2(900, 562)
