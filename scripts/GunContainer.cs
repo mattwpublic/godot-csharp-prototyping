@@ -5,7 +5,7 @@ public partial class GunContainer : Node2D
 {
     float fire_rate;
     float time_until_fire = 0f;
-    [Export] float rps = 10;
+    [Export] float rps = 6.66f;
 
     AudioStreamPlayer2D pistol_gunshots;
     Sprite2D gun;

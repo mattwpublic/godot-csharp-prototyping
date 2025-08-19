@@ -35,6 +35,7 @@ public partial class Player : CharacterBody2D
     Grapple grapple;
     AudioStreamPlayer2D jump_sfx;
     AudioStreamPlayer2D air_jump_sfx;
+    AnimationPlayer player_animator;
 
     public override void _Ready()
     {
@@ -55,6 +56,7 @@ public partial class Player : CharacterBody2D
         grapple = GetNode<Grapple>("Grapple");
         jump_sfx = GetNode<AudioStreamPlayer2D>("JumpSFX");
         air_jump_sfx = GetNode<AudioStreamPlayer2D>("AirJumpSFX");
+        player_animator = GetNode<AnimationPlayer>("PlayerAnimations");
     }
 
     public override void _Process(double delta)
@@ -108,13 +110,14 @@ public partial class Player : CharacterBody2D
 
         //jumping
         jump_attempted = Input.IsActionJustPressed("jump");
-        if(jump_attempted || input_buffer.TimeLeft > 0)
+        if (jump_attempted || input_buffer.TimeLeft > 0)
         {
             if (coyote_jump_available)
             {
                 EqualsVelocityY(JUMP_VELOCITY);
                 coyote_jump_available = false;
                 jump_sfx.Play();
+                player_animator.Play("jump_up_animation");
                 input_buffer.Stop();
             }
             else if (air_jump_available && !IsOnWall())
@@ -122,6 +125,7 @@ public partial class Player : CharacterBody2D
                 EqualsVelocityY(JUMP_VELOCITY);
                 air_jump_available = false;
                 air_jump_sfx.Play();
+                player_animator.Play("air_jump");
             }
             else if (IsOnWall() && input_vector.X != 0)
             {
@@ -136,10 +140,10 @@ public partial class Player : CharacterBody2D
             }
         }
 
-        FLOOR_DAMPING  = IsOnFloor() ? 1.0f : 0.2f;
+        FLOOR_DAMPING = IsOnFloor() ? 1.0f : 0.2f;
 
         //Moving left and right
-        if(input_vector.X != 0)
+        if (input_vector.X != 0)
         {
             EqualsVelocityX(Mathf.MoveToward(Velocity.X, input_vector.X * SPEED * dash_multiplier, ACCELERATION * (float)delta));
         }
@@ -160,7 +164,7 @@ public partial class Player : CharacterBody2D
                 //set the players position to the furthest possible position such that the max length is correct
                 var new_player_position = ((this.GlobalPosition - grapple.grapple_tip_vector).Normalized() * grapple.GRAPPLE_MAX_LENGTH) + grapple.grapple_bullet.GlobalPosition;
                 this.GlobalPosition = new_player_position;
-                
+
                 //this.Velocity = new Vector2(0, 0);
                 EqualsVelocityY(0);
             }
@@ -189,7 +193,7 @@ public partial class Player : CharacterBody2D
             else
             {
                 grapple_velocity.X *= grapple.GRAPPLE_STRENGTH_OPPOSITE;
-            } 
+            }
         }
         else
         {
@@ -198,6 +202,7 @@ public partial class Player : CharacterBody2D
         this.Velocity += grapple_velocity;
 
         MoveAndSlide();
+        
     }
 
     private Vector2 GetInputVector()
