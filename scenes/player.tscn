@@ -1,9 +1,9 @@
-[gd_scene load_steps=30 format=3 uid="uid://1n3r20q52sby"]
+[gd_scene load_steps=34 format=3 uid="uid://1n3r20q52sby"]
 
 [ext_resource type="Texture2D" uid="uid://c4kf3nregvecu" path="res://assets/textures/jellyguy.png" id="1_g2els"]
 [ext_resource type="Script" uid="uid://c5eyrjpv3fi1p" path="res://scripts/Player.cs" id="1_qhqgy"]
+[ext_resource type="Texture2D" uid="uid://ce12ig7xmk5iv" path="res://assets/textures/littlegun3.png" id="3_4ni07"]
 [ext_resource type="Texture2D" uid="uid://b4e72604587qu" path="res://assets/textures/littlegun2.png" id="3_dqkch"]
-[ext_resource type="Script" uid="uid://dhe284qhnahlq" path="res://scripts/Gun.cs" id="4_dqkch"]
 [ext_resource type="Script" uid="uid://dqpw5jrywy8nj" path="res://scripts/LaserContainer.cs" id="5_qlg0r"]
 [ext_resource type="PackedScene" uid="uid://bp3f8a45wxsb8" path="res://scenes/bullet.tscn" id="5_smehm"]
 [ext_resource type="Texture2D" uid="uid://cosr4u7ju5h3r" path="res://assets/textures/laser_point.png" id="6_tuyoq"]
@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" uid="uid://b3nnu7rhxmmue" path="res://assets/sfx/jump1.wav" id="13_oprun"]
 [ext_resource type="AudioStream" uid="uid://cy4r4ya082bt5" path="res://assets/sfx/grapple/grapple_shoot2.wav" id="14_60mlk"]
 [ext_resource type="AudioStream" uid="uid://c3q6dwiw8ta6w" path="res://assets/sfx/jump2.wav" id="14_a8ls1"]
+[ext_resource type="Script" uid="uid://ctqftocuej6ql" path="res://scripts/GunContainer.cs" id="14_l71n6"]
 [ext_resource type="AudioStream" uid="uid://dddv3jtgnep1t" path="res://assets/sfx/grapple/grapple_shoot3.wav" id="15_i4ail"]
 [ext_resource type="AudioStream" uid="uid://ciaixgpq3aiss" path="res://assets/sfx/jump3.wav" id="15_qfm1y"]
 [ext_resource type="AudioStream" uid="uid://lkc0ysyqib5p" path="res://assets/sfx/air_jump.wav" id="16_a8ls1"]
@@ -25,16 +26,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
 size = Vector2(8, 8)
-
-[sub_resource type="Gradient" id="Gradient_qlg0r"]
-offsets = PackedFloat32Array(0, 0.825806, 1)
-colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 0.645667, 1, 0, 0, 0)
-
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_oprun"]
-streams_count = 3
-stream_0/stream = ExtResource("10_3v2ag")
-stream_1/stream = ExtResource("11_jej6c")
-stream_2/stream = ExtResource("12_f1ej7")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fulsm"]
 streams_count = 3
@@ -57,6 +48,113 @@ stream_0/stream = ExtResource("16_a38lo")
 stream_1/stream = ExtResource("17_4ni07")
 stream_2/stream = ExtResource("18_l71n6")
 
+[sub_resource type="Gradient" id="Gradient_qlg0r"]
+offsets = PackedFloat32Array(0, 0.825806, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0, 0, 0.645667, 1, 0, 0, 0)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_oprun"]
+streams_count = 3
+stream_0/stream = ExtResource("10_3v2ag")
+stream_1/stream = ExtResource("11_jej6c")
+stream_2/stream = ExtResource("12_f1ej7")
+
+[sub_resource type="Animation" id="Animation_4ni07"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_dqkch")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-1, -1), Vector2(-2, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.001),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(5, 2)]
+}
+
+[sub_resource type="Animation" id="Animation_a38lo"]
+resource_name = "gun_shoot"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.125, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-0.797615, 0.00523599, -0.0733038, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("3_4ni07"), ExtResource("3_dqkch")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(3, 2), Vector2(5, 2)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l71n6"]
+_data = {
+&"RESET": SubResource("Animation_4ni07"),
+&"gun_shoot": SubResource("Animation_a38lo")
+}
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 2
@@ -67,45 +165,6 @@ shape = SubResource("RectangleShape2D_qhqgy")
 
 [node name="Body" type="Sprite2D" parent="."]
 texture = ExtResource("1_g2els")
-
-[node name="Gun" type="Sprite2D" parent="Body"]
-texture = ExtResource("3_dqkch")
-offset = Vector2(4, 1)
-script = ExtResource("4_dqkch")
-
-[node name="LaserContainer" type="Node2D" parent="Body/Gun"]
-show_behind_parent = true
-position = Vector2(4, 1)
-script = ExtResource("5_qlg0r")
-
-[node name="LaserLine2D" type="Line2D" parent="Body/Gun/LaserContainer"]
-show_behind_parent = true
-points = PackedVector2Array(0, 0, 100, 0)
-width = 1.0
-default_color = Color(1, 0, 0, 1)
-gradient = SubResource("Gradient_qlg0r")
-joint_mode = 1
-end_cap_mode = 2
-
-[node name="LaserRayCast" type="RayCast2D" parent="Body/Gun/LaserContainer"]
-target_position = Vector2(100, 0)
-
-[node name="LaserPoint" type="Sprite2D" parent="Body/Gun/LaserContainer"]
-physics_interpolation_mode = 2
-texture = ExtResource("6_tuyoq")
-offset = Vector2(-4, -0.5)
-
-[node name="LaserPointRayCast" type="RayCast2D" parent="Body/Gun/LaserContainer"]
-target_position = Vector2(500, 0)
-
-[node name="Muzzle" type="Node2D" parent="Body/Gun"]
-position = Vector2(9, 1)
-script = ExtResource("7_ur7pv")
-bulletScene = ExtResource("5_smehm")
-
-[node name="PistolGunshotSFX" type="AudioStreamPlayer2D" parent="Body/Gun/Muzzle"]
-position = Vector2(-9, -1)
-stream = SubResource("AudioStreamRandomizer_oprun")
 
 [node name="JumpSFX" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource("AudioStreamRandomizer_fulsm")
@@ -134,3 +193,50 @@ stream = SubResource("AudioStreamRandomizer_a38lo")
 
 [node name="GrappleHitSFX" type="AudioStreamPlayer2D" parent="Grapple"]
 stream = SubResource("AudioStreamRandomizer_ke2ow")
+
+[node name="GunContainer" type="Node2D" parent="."]
+script = ExtResource("14_l71n6")
+
+[node name="Gun" type="Sprite2D" parent="GunContainer"]
+position = Vector2(5, 2)
+texture = ExtResource("3_dqkch")
+offset = Vector2(-1, -1)
+
+[node name="LaserContainer" type="Node2D" parent="GunContainer/Gun"]
+show_behind_parent = true
+position = Vector2(3, -1)
+script = ExtResource("5_qlg0r")
+
+[node name="LaserLine2D" type="Line2D" parent="GunContainer/Gun/LaserContainer"]
+show_behind_parent = true
+points = PackedVector2Array(0, 0, 100, 0)
+width = 1.0
+default_color = Color(1, 0, 0, 1)
+gradient = SubResource("Gradient_qlg0r")
+joint_mode = 1
+end_cap_mode = 2
+
+[node name="LaserRayCast" type="RayCast2D" parent="GunContainer/Gun/LaserContainer"]
+target_position = Vector2(100, 0)
+
+[node name="LaserPoint" type="Sprite2D" parent="GunContainer/Gun/LaserContainer"]
+physics_interpolation_mode = 2
+texture = ExtResource("6_tuyoq")
+offset = Vector2(-4, -0.5)
+
+[node name="LaserPointRayCast" type="RayCast2D" parent="GunContainer/Gun/LaserContainer"]
+target_position = Vector2(500, 0)
+
+[node name="Muzzle" type="Node2D" parent="GunContainer/Gun"]
+position = Vector2(3, -1)
+script = ExtResource("7_ur7pv")
+bulletScene = ExtResource("5_smehm")
+
+[node name="PistolGunshotSFX" type="AudioStreamPlayer2D" parent="GunContainer/Gun/Muzzle"]
+stream = SubResource("AudioStreamRandomizer_oprun")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GunContainer"]
+root_node = NodePath("../Gun")
+libraries = {
+&"": SubResource("AnimationLibrary_l71n6")
+}
