@@ -55,13 +55,11 @@ public partial class Enemy : CharacterBody2D
 
     public void _on_player_detector_body_entered(Node2D body)
     {
-        GD.Print("body entered");
         if (body is Player)
         {
             if (player == null)
             {
                 player = (Player)body;
-                GD.Print("found player");
             }
         }
     }

@@ -31,6 +31,17 @@ public partial class Player : CharacterBody2D
     bool coyote_jump_available = true;
     bool air_jump_available = true;
 
+    public enum States
+    {
+        Idle,
+        Running,
+        Jumping,
+        AirJumping,
+        Falling,
+        Grappling
+    }
+    States state = States.Idle;
+
     Sprite2D body_sprite;
     Grapple grapple;
     AudioStreamPlayer2D jump_sfx;
@@ -114,18 +125,11 @@ public partial class Player : CharacterBody2D
         {
             if (coyote_jump_available)
             {
-                EqualsVelocityY(JUMP_VELOCITY);
-                coyote_jump_available = false;
-                jump_sfx.Play();
-                player_animator.Play("jump_up_animation");
-                input_buffer.Stop();
+                SetState(States.Jumping);
             }
             else if (air_jump_available && !IsOnWall())
             {
-                EqualsVelocityY(JUMP_VELOCITY);
-                air_jump_available = false;
-                air_jump_sfx.Play();
-                player_animator.Play("air_jump");
+                SetState(States.AirJumping);
             }
             else if (IsOnWall() && input_vector.X != 0)
             {
@@ -140,9 +144,8 @@ public partial class Player : CharacterBody2D
             }
         }
 
-        FLOOR_DAMPING = IsOnFloor() ? 1.0f : 0.2f;
-
         //Moving left and right
+        FLOOR_DAMPING = IsOnFloor() ? 1.0f : 0.2f;
         if (input_vector.X != 0)
         {
             EqualsVelocityX(Mathf.MoveToward(Velocity.X, input_vector.X * SPEED * dash_multiplier, ACCELERATION * (float)delta));
@@ -155,22 +158,19 @@ public partial class Player : CharacterBody2D
         //Grapple
         if (grapple.hooked)
         {
-            //calculate initial grapple velocity based on vector magnitude
-            grapple_velocity = (grapple.grapple_tip_vector - this.GlobalPosition).Normalized() * grapple.GRAPPLE_STRENGTH;
+            grapple_velocity = (grapple.grapple_tip_vector - GlobalPosition).Normalized() * grapple.GRAPPLE_STRENGTH;
 
-            //if the player reaches the max length of the grapple rope, it should not let them go any further
-            if ((grapple.grapple_tip_vector - this.GlobalPosition).Length() >= grapple.GRAPPLE_MAX_LENGTH)
+            if ((grapple.grapple_tip_vector - GlobalPosition).Length() >= grapple.GRAPPLE_MAX_LENGTH)
             {
                 //set the players position to the furthest possible position such that the max length is correct
-                var new_player_position = ((this.GlobalPosition - grapple.grapple_tip_vector).Normalized() * grapple.GRAPPLE_MAX_LENGTH) + grapple.grapple_bullet.GlobalPosition;
-                this.GlobalPosition = new_player_position;
+                var new_player_position = ((GlobalPosition - grapple.grapple_tip_vector).Normalized() * grapple.GRAPPLE_MAX_LENGTH) + grapple.grapple_bullet.GlobalPosition;
+                GlobalPosition = new_player_position;
 
-                //this.Velocity = new Vector2(0, 0);
                 EqualsVelocityY(0);
             }
 
-            //try to add more power to grapple as it stretches to its maximum range
-            if ((grapple.grapple_tip_vector - this.GlobalPosition).Length() >= grapple.GRAPPLE_MAX_RANGE)
+            //try to add more power to grapple as it stretches
+            if ((grapple.grapple_tip_vector - GlobalPosition).Length() >= grapple.GRAPPLE_MAX_RANGE)
             {
                 grapple_velocity *= 1.01f;
             }
@@ -182,7 +182,7 @@ public partial class Player : CharacterBody2D
             }
             else
             {
-                grapple_velocity.Y *= grapple.GRAPPLE_STRENGTH_UP;
+                //grapple_velocity.Y *= grapple.GRAPPLE_STRENGTH_UP;
             }
 
             //if the player is moving against the grapple's pull, it will weaken, otherwise it dampens everything
@@ -199,7 +199,7 @@ public partial class Player : CharacterBody2D
         {
             grapple_velocity = new Vector2(0, 0);
         }
-        this.Velocity += grapple_velocity;
+        Velocity += grapple_velocity;
 
         MoveAndSlide();
         
@@ -233,6 +233,50 @@ public partial class Player : CharacterBody2D
         {
             return FALL_GRAVITY;
         }
+    }
+
+    public void SetState(States new_state)
+    {
+        var prev_state = state;
+        state = new_state;
+
+        if (prev_state != state)
+        {
+            switch (state)
+            {
+                case States.Idle:
+                    break;
+                case States.Running:
+                    break;
+                case States.Jumping:
+                    Jump();
+                    break;
+                case States.AirJumping:
+                    AirJump();
+                    break;
+                case States.Falling:
+                    break;
+                case States.Grappling:
+                    break;
+            }
+        }     
+    }
+
+    private void Jump()
+    {
+        EqualsVelocityY(JUMP_VELOCITY);
+        coyote_jump_available = false;
+        input_buffer.Stop();
+        jump_sfx.Play();
+        player_animator.Play("jump_up_animation");
+    }
+
+    private void AirJump()
+    {
+        EqualsVelocityY(JUMP_VELOCITY);
+        air_jump_available = false;
+        air_jump_sfx.Play();
+        player_animator.Play("air_jump");
     }
 
     private void EqualsVelocityX(float delta_velocity_x)
