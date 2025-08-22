@@ -88,6 +88,7 @@ camera_zoom_out={
 2d_physics/layer_3="laser_point"
 2d_physics/layer_4="grapple_bullet"
 2d_physics/layer_5="bullet"
+2d_physics/layer_6="enemy"
 
 [physics]
 

@@ -118,7 +118,7 @@ public partial class Player : CharacterBody2D
             }
             PlusEqualsVelocityY(CalculateGravity(input_vector) * (float)delta);
 
-        } 
+        }
 
         //Moving left and right
         if (input_vector.X != 0.0f)
@@ -129,7 +129,7 @@ public partial class Player : CharacterBody2D
                 SetState(States.Running);
             }
         }
-        else if(IsOnFloor())
+        else if (IsOnFloor())
         {
             EqualsVelocityX(Mathf.MoveToward(Velocity.X, 0.0f, FRICTION * (float)delta));
             SetState(States.Idle);
@@ -148,7 +148,7 @@ public partial class Player : CharacterBody2D
                 SetState(States.AirJumping);
             }
             else if (IsOnWall() && input_vector.X != 0)
-            {       
+            {
                 SetState(States.WallJumping);
             }
             else if (jump_attempted)
@@ -201,7 +201,7 @@ public partial class Player : CharacterBody2D
         Velocity += grapple_velocity;
 
         MoveAndSlide();
-        
+
     }
 
     private Vector2 GetInputVector()
@@ -222,6 +222,7 @@ public partial class Player : CharacterBody2D
         }
         if (IsOnWallOnly() && Velocity.Y > 0 && _input_direction.X != 0)
         {
+            SetState(States.Sliding);
             return WALL_GRAVITY;
         }
         if (Velocity.Y < 0 || grapple.hooked)
@@ -230,10 +231,7 @@ public partial class Player : CharacterBody2D
         }
         else
         {
-            if (state != States.Grappling)
-            {
-                SetState(States.Falling);
-            }
+            SetState(States.Falling);
             return FALL_GRAVITY;
         }
     }
@@ -245,12 +243,19 @@ public partial class Player : CharacterBody2D
 
         if (prev_state != state)
         {
+            AnimationCleanup();
+            if (prev_state == States.Falling && (state == States.Idle || state == States.Running))
+            {
+                Land();
+                GD.Print("Landed");
+            }
             switch (state)
             {
                 case States.Idle:
                     Idle();
                     break;
                 case States.Running:
+                    Run();
                     break;
                 case States.Jumping:
                     Jump();
@@ -265,25 +270,31 @@ public partial class Player : CharacterBody2D
                     Fall();
                     break;
                 case States.Sliding:
+                    Slide();
                     break;
                 case States.Grappling:
                     GrappleAnimations();
                     break;
             }
-
-            if (prev_state == States.Falling && (state == States.Idle || state == States.Running))
-            {
-                Land();
-            }
-            
             GD.Print(state);
-        }     
+        }
     }
 
     private void Idle()
     {
-        player_animator.Stop();
-        player_animator.Play("idle");
+        player_animator.Queue("idle");
+    }
+
+    private void Run()
+    {
+        if (input_vector.X > 0)
+        {
+            player_animator.Queue("run_right");
+        }
+        else
+        {
+            player_animator.Queue("run_left");
+        }
     }
 
     private void Jump()
@@ -292,7 +303,6 @@ public partial class Player : CharacterBody2D
         coyote_jump_available = false;
         input_buffer.Stop();
         jump_sfx.Play();
-        player_animator.Stop();
         player_animator.Play("jump_up_animation");
     }
 
@@ -301,7 +311,6 @@ public partial class Player : CharacterBody2D
         EqualsVelocityY(JUMP_VELOCITY);
         air_jump_available = false;
         air_jump_sfx.Play();
-        player_animator.Stop();
         player_animator.Play("air_jump");
     }
 
@@ -315,17 +324,25 @@ public partial class Player : CharacterBody2D
 
     private void Fall()
     {
-        player_animator.Stop();
-        player_animator.Play("falling");
+        player_animator.Queue("falling");
+    }
+
+    private void Slide()
+    {
+        player_animator.Queue("sliding");
     }
 
     private void Land()
     {
-        player_animator.Stop();
         player_animator.Play("land");
     }
 
     private void GrappleAnimations()
+    {
+        player_animator.Play("grappling");
+    }
+
+    private void AnimationCleanup()
     {
         player_animator.Stop();
         player_animator.Play("RESET");

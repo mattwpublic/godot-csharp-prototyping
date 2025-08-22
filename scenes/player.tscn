@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=3 uid="uid://1n3r20q52sby"]
+[gd_scene load_steps=47 format=3 uid="uid://1n3r20q52sby"]
 
 [ext_resource type="Texture2D" uid="uid://c4kf3nregvecu" path="res://assets/textures/jellyguy.png" id="1_g2els"]
 [ext_resource type="Script" uid="uid://c5eyrjpv3fi1p" path="res://scripts/Player.cs" id="1_qhqgy"]
@@ -23,6 +23,8 @@
 [ext_resource type="AudioStream" uid="uid://p3c4a1f6v6hs" path="res://assets/sfx/grapple/grapple_hit1.wav" id="16_a38lo"]
 [ext_resource type="AudioStream" uid="uid://buewtbr1fjkkb" path="res://assets/sfx/grapple/grapple_hit2.wav" id="17_4ni07"]
 [ext_resource type="AudioStream" uid="uid://b1vyai2pm2qit" path="res://assets/sfx/grapple/grapple_hit3.wav" id="18_l71n6"]
+[ext_resource type="Texture2D" uid="uid://codwh3n5waksj" path="res://assets/textures/jellyguy3.png" id="24_ke2ow"]
+[ext_resource type="Texture2D" uid="uid://dr5ai0m2tvknr" path="res://assets/textures/jellyguy2.png" id="24_l71n6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
 size = Vector2(8, 8)
@@ -193,6 +195,42 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector2(0, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Body:skew")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Body:texture")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_g2els")]
+}
 
 [sub_resource type="Animation" id="Animation_ujl30"]
 resource_name = "air_jump"
@@ -210,34 +248,6 @@ tracks/0/keys = {
 "values": [Vector2(0.5, 2), Vector2(1, 1)]
 }
 
-[sub_resource type="Animation" id="Animation_l71n6"]
-resource_name = "jump_up_animation"
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 4.59479),
-"update": 0,
-"values": [Vector2(1, 1.5), Vector2(1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body:offset")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(0, -1.38), Vector2(0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_31cv2"]
 resource_name = "falling"
 length = 2.0
@@ -252,34 +262,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 6.72717),
 "update": 0,
 "values": [Vector2(1, 1), Vector2(0.5, 2)]
-}
-
-[sub_resource type="Animation" id="Animation_pf23h"]
-resource_name = "land"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0.625), Vector2(0, 3.45), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 0.835), Vector2(3.52, 0.13), Vector2(1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_dt7fs"]
@@ -310,14 +292,223 @@ tracks/1/keys = {
 "values": [Vector2(0, 0), Vector2(0, -0.235), Vector2(0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_l71n6"]
+resource_name = "jump_up_animation"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 4.59479),
+"update": 0,
+"values": [Vector2(1, 1.5), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -1.38), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_pf23h"]
+resource_name = "land"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0.625), Vector2(0, 3.45), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 0.835), Vector2(3.52, 0.13), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.01, 0.05),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("1_g2els"), ExtResource("24_ke2ow"), ExtResource("1_g2els")]
+}
+
+[sub_resource type="Animation" id="Animation_wqfne"]
+resource_name = "run_right"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.1309, 0.1309, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.115, 1), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body:skew")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.244346, -0.0820305, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -0.715), Vector2(0, -0.715), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_wnwbv"]
+resource_name = "run_left"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.1309, -0.1309, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.115, 1), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body:skew")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.244346, 0.0820305, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -0.715), Vector2(0, -0.715), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gl8cc"]
+resource_name = "grappling"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("24_l71n6")]
+}
+
+[sub_resource type="Animation" id="Animation_487ah"]
+resource_name = "sliding"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0.8, 1.18), Vector2(0.75, 1.3)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ujl30"]
 _data = {
 &"RESET": SubResource("Animation_ke2ow"),
 &"air_jump": SubResource("Animation_ujl30"),
 &"falling": SubResource("Animation_31cv2"),
+&"grappling": SubResource("Animation_gl8cc"),
 &"idle": SubResource("Animation_dt7fs"),
 &"jump_up_animation": SubResource("Animation_l71n6"),
-&"land": SubResource("Animation_pf23h")
+&"land": SubResource("Animation_pf23h"),
+&"run_left": SubResource("Animation_wnwbv"),
+&"run_right": SubResource("Animation_wqfne"),
+&"sliding": SubResource("Animation_487ah")
 }
 
 [node name="Player" type="CharacterBody2D"]
@@ -383,6 +574,7 @@ end_cap_mode = 2
 
 [node name="LaserRayCast" type="RayCast2D" parent="GunContainer/Gun/LaserContainer"]
 target_position = Vector2(100, 0)
+collision_mask = 33
 
 [node name="LaserPoint" type="Sprite2D" parent="GunContainer/Gun/LaserContainer"]
 physics_interpolation_mode = 2
@@ -391,6 +583,7 @@ offset = Vector2(-4, -0.5)
 
 [node name="LaserPointRayCast" type="RayCast2D" parent="GunContainer/Gun/LaserContainer"]
 target_position = Vector2(500, 0)
+collision_mask = 33
 
 [node name="Muzzle" type="Node2D" parent="GunContainer/Gun"]
 position = Vector2(3, -1)
