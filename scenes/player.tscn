@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://1n3r20q52sby"]
+[gd_scene load_steps=49 format=3 uid="uid://1n3r20q52sby"]
 
 [ext_resource type="Texture2D" uid="uid://c4kf3nregvecu" path="res://assets/textures/jellyguy.png" id="1_g2els"]
 [ext_resource type="Script" uid="uid://c5eyrjpv3fi1p" path="res://scripts/Player.cs" id="1_qhqgy"]
@@ -23,8 +23,10 @@
 [ext_resource type="AudioStream" uid="uid://p3c4a1f6v6hs" path="res://assets/sfx/grapple/grapple_hit1.wav" id="16_a38lo"]
 [ext_resource type="AudioStream" uid="uid://buewtbr1fjkkb" path="res://assets/sfx/grapple/grapple_hit2.wav" id="17_4ni07"]
 [ext_resource type="AudioStream" uid="uid://b1vyai2pm2qit" path="res://assets/sfx/grapple/grapple_hit3.wav" id="18_l71n6"]
+[ext_resource type="Texture2D" uid="uid://ba4cayq01hn0n" path="res://assets/textures/muzzle_flash.png" id="23_31cv2"]
 [ext_resource type="Texture2D" uid="uid://codwh3n5waksj" path="res://assets/textures/jellyguy3.png" id="24_ke2ow"]
 [ext_resource type="Texture2D" uid="uid://dr5ai0m2tvknr" path="res://assets/textures/jellyguy2.png" id="24_l71n6"]
+[ext_resource type="Texture2D" uid="uid://i2r7u5nu8esf" path="res://assets/textures/jellyguy4.png" id="24_ujl30"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qhqgy"]
 size = Vector2(8, 8)
@@ -110,6 +112,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector2(5, 2)]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Muzzle/MuzzleFlash:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_a38lo"]
 resource_name = "gun_shoot"
@@ -149,6 +163,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(3, 2), Vector2(5, 2)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Muzzle/MuzzleFlash:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.025),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_l71n6"]
@@ -246,6 +272,18 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0.5, 2), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.133333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("24_ujl30"), ExtResource("1_g2els")]
 }
 
 [sub_resource type="Animation" id="Animation_31cv2"]
@@ -592,6 +630,11 @@ bulletScene = ExtResource("5_smehm")
 
 [node name="PistolGunshotSFX" type="AudioStreamPlayer2D" parent="GunContainer/Gun/Muzzle"]
 stream = SubResource("AudioStreamRandomizer_oprun")
+
+[node name="MuzzleFlash" type="Sprite2D" parent="GunContainer/Gun/Muzzle"]
+visible = false
+position = Vector2(4, -7.15256e-07)
+texture = ExtResource("23_31cv2")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="GunContainer"]
 root_node = NodePath("../Gun")
