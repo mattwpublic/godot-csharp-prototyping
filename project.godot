@@ -13,7 +13,6 @@ config_version=5
 config/name="putting_it_together"
 run/main_scene="uid://cbohvp3k37307"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
-config/icon="res://icon.svg"
 
 [dotnet]
 
