@@ -6,7 +6,6 @@ public partial class Player : CharacterBody2D
     [Export] float SPEED = 350.0f;
     [Export] float ACCELERATION = 1200.0f;
     [Export] float FRICTION = 1400.0f;
-    [Export] float FLOOR_DAMPING = 1.0f;
 
     [Export] float GRAVITY = 2000.0f;
     [Export] float FALL_GRAVITY = 5000.0f;
@@ -37,7 +36,9 @@ public partial class Player : CharacterBody2D
         Running,
         Jumping,
         AirJumping,
+        WallJumping,
         Falling,
+        Sliding,
         Grappling
     }
     States state = States.Idle;
@@ -117,6 +118,21 @@ public partial class Player : CharacterBody2D
             }
             PlusEqualsVelocityY(CalculateGravity(input_vector) * (float)delta);
 
+        } 
+
+        //Moving left and right
+        if (input_vector.X != 0.0f)
+        {
+            EqualsVelocityX(Mathf.MoveToward(Velocity.X, input_vector.X * SPEED * dash_multiplier, ACCELERATION * (float)delta));
+            if (IsOnFloor())
+            {
+                SetState(States.Running);
+            }
+        }
+        else if(IsOnFloor())
+        {
+            EqualsVelocityX(Mathf.MoveToward(Velocity.X, 0.0f, FRICTION * (float)delta));
+            SetState(States.Idle);
         }
 
         //jumping
@@ -132,11 +148,8 @@ public partial class Player : CharacterBody2D
                 SetState(States.AirJumping);
             }
             else if (IsOnWall() && input_vector.X != 0)
-            {
-                EqualsVelocityY(WALL_JUMP_VELOCITY);
-                EqualsVelocityX(WALL_JUMP_PUSHBACK * Math.Sign(input_vector.X));
-                Velocity = _velocity;
-                jump_sfx.Play();
+            {       
+                SetState(States.WallJumping);
             }
             else if (jump_attempted)
             {
@@ -144,20 +157,10 @@ public partial class Player : CharacterBody2D
             }
         }
 
-        //Moving left and right
-        FLOOR_DAMPING = IsOnFloor() ? 1.0f : 0.2f;
-        if (input_vector.X != 0)
-        {
-            EqualsVelocityX(Mathf.MoveToward(Velocity.X, input_vector.X * SPEED * dash_multiplier, ACCELERATION * (float)delta));
-        }
-        else if (IsOnFloor() && grapple_velocity.X == 0)
-        {
-            EqualsVelocityX(Mathf.MoveToward(Velocity.X, 0, FRICTION * (float)delta) * FLOOR_DAMPING);
-        }
-
         //Grapple
         if (grapple.hooked)
         {
+            SetState(States.Grappling);
             grapple_velocity = (grapple.grapple_tip_vector - GlobalPosition).Normalized() * grapple.GRAPPLE_STRENGTH;
 
             if ((grapple.grapple_tip_vector - GlobalPosition).Length() >= grapple.GRAPPLE_MAX_LENGTH)
@@ -179,10 +182,6 @@ public partial class Player : CharacterBody2D
             if (grapple_velocity.Y > 0)
             {
                 grapple_velocity.Y *= grapple.GRAPPLE_STRENGTH_DOWN;
-            }
-            else
-            {
-                //grapple_velocity.Y *= grapple.GRAPPLE_STRENGTH_UP;
             }
 
             //if the player is moving against the grapple's pull, it will weaken, otherwise it dampens everything
@@ -217,11 +216,11 @@ public partial class Player : CharacterBody2D
 
     private float CalculateGravity(Vector2 _input_direction)
     {
-        if(Input.IsActionPressed("move_down"))
+        if (Input.IsActionPressed("move_down"))
         {
             return FAST_FALL_GRAVITY;
         }
-        if(IsOnWallOnly() && Velocity.Y > 0 && _input_direction.X != 0)
+        if (IsOnWallOnly() && Velocity.Y > 0 && _input_direction.X != 0)
         {
             return WALL_GRAVITY;
         }
@@ -231,6 +230,10 @@ public partial class Player : CharacterBody2D
         }
         else
         {
+            if (state != States.Grappling)
+            {
+                SetState(States.Falling);
+            }
             return FALL_GRAVITY;
         }
     }
@@ -245,6 +248,7 @@ public partial class Player : CharacterBody2D
             switch (state)
             {
                 case States.Idle:
+                    Idle();
                     break;
                 case States.Running:
                     break;
@@ -254,12 +258,32 @@ public partial class Player : CharacterBody2D
                 case States.AirJumping:
                     AirJump();
                     break;
+                case States.WallJumping:
+                    WallJump();
+                    break;
                 case States.Falling:
+                    Fall();
+                    break;
+                case States.Sliding:
                     break;
                 case States.Grappling:
+                    GrappleAnimations();
                     break;
             }
+
+            if (prev_state == States.Falling && (state == States.Idle || state == States.Running))
+            {
+                Land();
+            }
+            
+            GD.Print(state);
         }     
+    }
+
+    private void Idle()
+    {
+        player_animator.Stop();
+        player_animator.Play("idle");
     }
 
     private void Jump()
@@ -268,6 +292,7 @@ public partial class Player : CharacterBody2D
         coyote_jump_available = false;
         input_buffer.Stop();
         jump_sfx.Play();
+        player_animator.Stop();
         player_animator.Play("jump_up_animation");
     }
 
@@ -276,7 +301,34 @@ public partial class Player : CharacterBody2D
         EqualsVelocityY(JUMP_VELOCITY);
         air_jump_available = false;
         air_jump_sfx.Play();
+        player_animator.Stop();
         player_animator.Play("air_jump");
+    }
+
+    private void WallJump()
+    {
+        EqualsVelocityY(WALL_JUMP_VELOCITY);
+        EqualsVelocityX(WALL_JUMP_PUSHBACK * Math.Sign(input_vector.X));
+        Velocity = _velocity;
+        jump_sfx.Play();
+    }
+
+    private void Fall()
+    {
+        player_animator.Stop();
+        player_animator.Play("falling");
+    }
+
+    private void Land()
+    {
+        player_animator.Stop();
+        player_animator.Play("land");
+    }
+
+    private void GrappleAnimations()
+    {
+        player_animator.Stop();
+        player_animator.Play("RESET");
     }
 
     private void EqualsVelocityX(float delta_velocity_x)
