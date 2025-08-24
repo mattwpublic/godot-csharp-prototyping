@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://orb7qwg0gie4" path="res://assets/textures/8px-grid.png" id="2_74khn"]
 [ext_resource type="PackedScene" uid="uid://1n3r20q52sby" path="res://scenes/player.tscn" id="2_rq02l"]
 [ext_resource type="Script" uid="uid://c2y4db56weyds" path="res://scripts/Camera2d.cs" id="3_kgelg"]
-[ext_resource type="AudioStream" uid="uid://o4rh5el150bn" path="res://assets/sfx/HelloWorld2.mp3" id="5_vh4rc"]
+[ext_resource type="AudioStream" uid="uid://5xv3kd2r7hfs" path="res://assets/sfx/HelloWorld3.mp3" id="5_vh4rc"]
 [ext_resource type="AudioStream" uid="uid://cn1beyngx6ha6" path="res://assets/sfx/camera_flip_woosh.wav" id="6_tmmdy"]
 [ext_resource type="PackedScene" uid="uid://dw7pmsto1soog" path="res://scenes/enemy.tscn" id="7_vh4rc"]
 
