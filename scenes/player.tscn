@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://1n3r20q52sby"]
+[gd_scene load_steps=50 format=3 uid="uid://1n3r20q52sby"]
 
 [ext_resource type="Texture2D" uid="uid://c4kf3nregvecu" path="res://assets/textures/jellyguy.png" id="1_g2els"]
 [ext_resource type="Script" uid="uid://c5eyrjpv3fi1p" path="res://scripts/Player.cs" id="1_qhqgy"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bp3f8a45wxsb8" path="res://scenes/bullet.tscn" id="5_smehm"]
 [ext_resource type="Texture2D" uid="uid://cosr4u7ju5h3r" path="res://assets/textures/laser_point.png" id="6_tuyoq"]
 [ext_resource type="Script" uid="uid://bwlypwobqws22" path="res://scripts/Grapple.cs" id="7_fjrip"]
+[ext_resource type="AudioStream" uid="uid://cefsrk57nxcfx" path="res://assets/sfx/land.wav" id="7_pf23h"]
 [ext_resource type="Script" uid="uid://ccx0xx4shrohj" path="res://scripts/Muzzle.cs" id="7_ur7pv"]
 [ext_resource type="AudioStream" uid="uid://ck1rxmgldurcb" path="res://assets/sfx/guns/pistol/pistol1.wav" id="10_3v2ag"]
 [ext_resource type="AudioStream" uid="uid://d1tu0vxrkuo68" path="res://assets/sfx/guns/pistol/pistol2.wav" id="11_jej6c"]
@@ -302,6 +303,22 @@ tracks/0/keys = {
 "values": [Vector2(1, 1), Vector2(0.5, 2)]
 }
 
+[sub_resource type="Animation" id="Animation_gl8cc"]
+resource_name = "grappling"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("24_l71n6")]
+}
+
 [sub_resource type="Animation" id="Animation_dt7fs"]
 resource_name = "idle"
 loop_mode = 1
@@ -398,59 +415,6 @@ tracks/2/keys = {
 "values": [ExtResource("1_g2els"), ExtResource("24_ke2ow"), ExtResource("1_g2els")]
 }
 
-[sub_resource type="Animation" id="Animation_wqfne"]
-resource_name = "run_right"
-length = 0.3
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Body:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [0.0, -0.1309, 0.1309, 0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Body:scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1.115, 1), Vector2(1, 1), Vector2(1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Body:skew")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [0.0, 0.244346, -0.0820305, 0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Body:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, -0.715), Vector2(0, -0.715), Vector2(0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_wnwbv"]
 resource_name = "run_left"
 length = 0.3
@@ -504,20 +468,57 @@ tracks/3/keys = {
 "values": [Vector2(0, 0), Vector2(0, -0.715), Vector2(0, -0.715), Vector2(0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_gl8cc"]
-resource_name = "grappling"
-length = 0.001
+[sub_resource type="Animation" id="Animation_wqfne"]
+resource_name = "run_right"
+length = 0.3
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Body:texture")
+tracks/0/path = NodePath("Body:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("24_l71n6")]
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, -0.1309, 0.1309, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Body:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.115, 1), Vector2(1, 1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Body:skew")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.244346, -0.0820305, 0.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Body:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -0.715), Vector2(0, -0.715), Vector2(0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_487ah"]
@@ -566,6 +567,10 @@ stream = SubResource("AudioStreamRandomizer_fulsm")
 [node name="AirJumpSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("16_a8ls1")
 volume_db = 4.602
+
+[node name="LandSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_pf23h")
+volume_db = -15.186
 
 [node name="Grapple" type="Node2D" parent="."]
 show_behind_parent = true

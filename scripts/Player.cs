@@ -47,6 +47,7 @@ public partial class Player : CharacterBody2D
     Grapple grapple;
     AudioStreamPlayer2D jump_sfx;
     AudioStreamPlayer2D air_jump_sfx;
+    AudioStreamPlayer2D land_sfx;
     AnimationPlayer player_animator;
 
     public override void _Ready()
@@ -68,6 +69,7 @@ public partial class Player : CharacterBody2D
         grapple = GetNode<Grapple>("Grapple");
         jump_sfx = GetNode<AudioStreamPlayer2D>("JumpSFX");
         air_jump_sfx = GetNode<AudioStreamPlayer2D>("AirJumpSFX");
+        land_sfx = GetNode<AudioStreamPlayer2D>("LandSFX");
         player_animator = GetNode<AnimationPlayer>("PlayerAnimations");
     }
 
@@ -335,6 +337,7 @@ public partial class Player : CharacterBody2D
     private void Land()
     {
         player_animator.Play("land");
+        land_sfx.Play();
     }
 
     private void GrappleAnimations()
